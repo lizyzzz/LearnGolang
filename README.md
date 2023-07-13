@@ -93,7 +93,21 @@ func Sub(x,y int) int {
 (1) 布尔型 bool; (2) 数字类型 int, uint8, uint16, ..., int64等, 浮点型 float32 float64 complex64 complex128;  
 (3) 字符串类型 string 占16字节，前8字节是一个指针，后8字节是一个整数，标识字节长度。该字符串不以'\0'结尾。  
 (4) 派生类型：(a) 指针 (b) 数组 (c) 结构化类型 (d) Channel类型 (e) 函数类型 (f) 切片类型 (g) 接口类型 (h) Map类型。
+### 变量
+声明变量用 var 关键字  
+```
+var identifier type
+var identifier1, identifier2 type  // 声明多个变量
+package main
+import "fmt"
+func main() {
+    var a string = "Runoob"
+    fmt.Println(a)
 
+    var b, c int = 1, 2
+    fmt.Println(b, c)
+}
+```
 
 
 
