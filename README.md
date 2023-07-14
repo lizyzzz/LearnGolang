@@ -163,8 +163,7 @@ const (
 * 赋值运算符  
   = += -= \*= /= %= <<= >>= &= ^= |=（同cpp）
 * 运算符优先级
-https://github.com/lizyzzz/LearnGolang/blob/main/images/1.png
-  
+![image-1](https://github.com/lizyzzz/LearnGolang/blob/main/images/1.png)
 
 
 
