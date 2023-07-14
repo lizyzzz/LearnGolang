@@ -164,8 +164,194 @@ const (
   = += -= \*= /= %= <<= >>= &= ^= |=（同cpp）
 * 运算符优先级
 ![image-1](https://github.com/lizyzzz/LearnGolang/blob/main/images/1.png)
+### 条件语句
+（1）if 语句
+```
+package main
+import "fmt"
 
+func main() {
+   /* go 没有三目运算符 ? : */
+   /* 除了条件表达式不带括号, else if 和 else 不能换行, 其他跟 cpp 一样 */
+   var a int = 10
+   if a < 20 {  // 条件表达式不带括号
+       fmt.Printf("a 小于 20\n" )
+   }
+   fmt.Printf("a 的值为 : %d\n", a)
 
+   if a < 20 {
+       fmt.Printf("a 小于 20\n" );
+   } else {  /* else 不能换行 */
+       fmt.Printf("a 不小于 20\n" );
+   }
+   // if else if else
+   var age int = 23
+   if age == 25 {
+     fmt.Println("true")
+   } else if age < 25 {
+     fmt.Println("too small")
+   } else {
+     fmt.Println("too big")
+   }
+}
+```
+（2）switch 语句
+```
+/*
+switch 语句执行的过程从上至下，直到找到匹配项，匹配项后面也不需要再加 break。
+switch 默认情况下 case 最后自带 break 语句，匹配成功后就不会执行其他 case，如果我们需要执行后面的 case，可以使用 fallthrough 。
+*/
+package main
 
+import "fmt"
 
+func main() {
+   var marks int = 90
+
+   switch marks {
+      case 90: grade = "A"
+      case 80: grade = "B"
+      case 50,60,70 : grade = "C"
+      default: grade = "D"  
+   }
+   // switch 语句还可以被用于 type-switch 来判断某个 interface 变量中实际存储的变量类型。
+   switch x.(type){
+      case type:
+         statement(s);      
+      case type:
+         statement(s); 
+    /* 你可以定义任意个数的case */
+      default: /* 可选 */
+         statement(s);
+   }
+   // fallthrough 情况
+   switch {
+      case false:
+         fmt.Println("1、case 条件语句为 false")
+         fallthrough
+      case true:
+         fmt.Println("2、case 条件语句为 true")
+         fallthrough
+      case false:
+         fmt.Println("3、case 条件语句为 false")
+         fallthrough
+      case true:
+         fmt.Println("4、case 条件语句为 true")
+      case false:
+         fmt.Println("5、case 条件语句为 false")
+         fallthrough
+      default:
+         fmt.Println("6、默认 case")
+    }
+   // 输出结果 switch 从第一个判断表达式为 true 的 case 开始执行，如果 case 带有 fallthrough，
+   // 程序会继续执行下一条 case，且它不会去判断下一个 case 的表达式是否为 true。
+   /*
+      2、case 条件语句为 true
+      3、case 条件语句为 false
+      4、case 条件语句为 true
+    */
+}
+```
+（3）select 语句
+```
+package main
+
+import "fmt"
+
+func main() {
+  // 定义两个通道
+  ch1 := make(chan string)
+  ch2 := make(chan string)
+
+  // 启动两个 goroutine，分别从两个通道中获取数据
+  go func() {
+    for {
+      ch1 <- "from 1"
+    }
+  }()
+  go func() {
+    for {
+      ch2 <- "from 2"
+    }
+  }()
+
+  // 使用 select 语句非阻塞地从两个通道中获取数据
+  for {
+    select {
+    case msg1 := <-ch1:
+      fmt.Println(msg1)
+    case msg2 := <-ch2:
+      fmt.Println(msg2)
+    default:
+      // 如果两个通道都没有可用的数据，则执行这里的语句
+      fmt.Println("no message received")
+    }
+  }
+}
+```
+### 循环语句
+（1）for 循环（Go 没有 while 循环）
+```
+// 第一种：和 cpp 的 for 一样
+for init; condition; post { }
+// 第二种：和 cpp 的 while 一样
+for condition { }
+// 第三种：和 cpp 的 for( ; ; ) 一样
+for { }
+// range 用法与 cpp 种 auto 遍历用法一样
+--------------------------------
+// 第一种
+sum := 0
+for i := 0; i <= 10; i++ {
+   sum += i
+}
+// 第二种
+sum := 1
+for ; sum <= 10; {
+   sum += sum
+}
+// 这样写也可以，更像 While 语句形式
+for sum <= 10{
+   sum += sum
+}
+// 第三种
+sum := 0
+for {
+   sum++ // 无限循环下去
+}
+// range 用法
+strings := []string{"google", "runoob"}
+for i, s := range strings {
+   fmt.Println(i, s)
+}
+// 输出
+/*
+0 google
+1 runoob
+*/
+-----------------------------
+map1 := make(map[int]float32)
+map1[1] = 1.0
+map1[2] = 2.0
+map1[3] = 3.0
+map1[4] = 4.0
+
+// 读取 key 和 value
+for key, value := range map1 {
+   fmt.Printf("key is: %d - value is: %f\n", key, value)
+}
+// 读取 key
+for key := range map1 {
+   fmt.Printf("key is: %d\n", key)
+}
+// 读取 value
+for _, value := range map1 {
+   fmt.Printf("value is: %f\n", value)
+}
+
+// 跳出循环的语句 与 cpp 类似
+break
+continue
+goto(与 cpp 一样少用)
+```
 
