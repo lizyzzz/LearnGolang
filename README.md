@@ -101,13 +101,30 @@ var identifier1, identifier2 type  // 声明多个变量
 package main
 import "fmt"
 func main() {
-    var a string = "Runoob"
+    // 第一种方式
+    var a string // 声明但没有初始化，变量默认为 "零" 值
+    a = "lizy";   // 初始化
+
+    var a string = "Runoob" // 声明并初始化
     fmt.Println(a)
 
-    var b, c int = 1, 2
-    fmt.Println(b, c)
+    // 第二种方式（根据值推断变量类型）
+    var b, c = 1, "lizy" // 多变量同样的用法
+    fmt.Println(b)
+
+    // 第三种方式
+    c := 1 // 声明并初始化变量c
 }
 ```
+### 常量
+```
+// 定义格式： const identifier [type] = value // [type] 可以省略
+const LENGTH int = 10
+const WIDTH int = 5  
+var area int = LENGTH * WIDTH
+const a, b, c = 1, false, "str" //多重赋值
+```
+
 
 
 
