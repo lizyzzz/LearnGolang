@@ -123,7 +123,48 @@ const LENGTH int = 10
 const WIDTH int = 5  
 var area int = LENGTH * WIDTH
 const a, b, c = 1, false, "str" //多重赋值
+
+/*--- iota 特殊常量 ---*/
+/*  iota 在 const关键字出现时将被重置为 0(const 内部的第一行之前)，
+    const 中每新增一行常量声明将使 iota 计数一次(iota 可理解为 const 语句块中的行索引)。  */
+// 常用来做枚举值
+const (
+    a = iota  // 0
+    b         // 1
+    c         // 2
+)
+const (
+   a = iota   //0
+   b          //1
+   c          //2
+   d = "ha"   //独立值，iota += 1
+   e          //"ha"   iota += 1
+   f = 100    //iota +=1
+   g          //100  iota +=1
+   h = iota   //7,恢复计数
+   i          //8
+)
+const (
+   i=1<<iota  //1, iota = 0
+   j=3<<iota  //6, iota = 1 
+   k          //12即 3<<2 iota = 2 
+   l          //24即 3<<3 iota = 3 
+)
 ```
+### 运算符
+* 算数运算符  
+  \+ \- \* / % ++ --（同cpp）
+* 关系运算符  
+  == != > < >= <= （同cpp）
+* 逻辑运算符  
+  && || !（同cpp）
+* 位运算符  
+  & | ^ << >>（同cpp）
+* 赋值运算符  
+  = += -= \*= /= %= <<= >>= &= ^= |=（同cpp）
+* 运算符优先级
+
+  
 
 
 
