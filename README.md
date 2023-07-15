@@ -508,7 +508,7 @@ import "fmt"
 
 func main() {
     // Step 1: 创建数组
-    values := [][]int{}
+    values := [][]int{}  // [] 不加size的是切片类型, 也叫动态数组, 与 cpp 的 vector 类似 
 
     // Step 2: 使用 append() 函数向空的二维数组添加两行一维数组
     row1 := []int{1, 2, 3}
