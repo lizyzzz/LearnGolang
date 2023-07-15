@@ -571,6 +571,60 @@ func getAverage(arr []int, size int) float32 {
   // 函数体
 }
 ```
+### 指针
+```
+// 语法形式
+// var var_name *var-type
+// 空指针为 nil
+/* 也支持:
+   指针的指针
+   指针数组
+   等
+*/
+```
+### 结构体
+```
+// 语法形式
+type struct_variable_type struct {
+   member definition
+   member definition
+   ...
+   member definition
+}
+// 定义了结构体就能用于变量的声明
+variable_name := structure_variable_type {value1, value2...valuen}
+或
+variable_name := structure_variable_type { key1: value1, key2: value2..., keyn: valuen}
+// 如果要访问结构体成员，需要使用点号 "." 操作符
+package main
 
+import "fmt"
 
+type Books struct {
+   title string
+   author string
+   subject string
+   book_id int
+}
+
+func main() {
+   var Book1 Books        /* 声明 Book1 为 Books 类型 */
+   var Book2 Books        /* 声明 Book2 为 Books 类型 */
+
+   /* book 1 描述 */
+   Book1.title = "Go 语言"
+   Book1.author = "www.runoob.com"
+   Book1.subject = "Go 语言教程"
+   Book1.book_id = 6495407
+   /* 打印 Book1 信息 */
+   fmt.Printf( "Book 1 title : %s\n", Book1.title)
+   fmt.Printf( "Book 1 author : %s\n", Book1.author)
+   fmt.Printf( "Book 1 subject : %s\n", Book1.subject)
+   fmt.Printf( "Book 1 book_id : %d\n", Book1.book_id)
+}
+------------------------------
+// 结构体指针
+var struct_pointer *struct_variable_type
+// 使用结构体指针访问结构体成员，使用 "." 操作符(与 cpp 的 -> 不同)
+```
 
