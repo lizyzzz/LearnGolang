@@ -354,4 +354,73 @@ break
 continue
 goto(与 cpp 一样少用)
 ```
+### 函数
+```
+// 函数形式
+// [] 中的内容可以省略, 而且 return_types 可以有多个值
+// 默认是 值传递, 也有引用传递, 引用传递就是指针类型
+func function_name( [parameter list] ) [return_types] {
+   函数体
+}
+-------------------
+package main
+
+import "fmt"
+
+func main() {
+   var a int = 100
+   var b int = 200
+   var ret int
+
+   ret = max(a, b)
+   fmt.Printf( "最大值是 : %d\n", ret )
+}
+
+/* 函数返回两个数的最大值 */
+func max(num1, num2 int) int {
+   var result int
+   if (num1 > num2) {
+      result = num1
+   } else {
+      result = num2
+   }
+   return result
+}
+--------------------
+func swap(x, y string) (string, string) {
+   return y, x
+}
+
+func main() {
+   a, b := swap("Google", "Runoob")
+   fmt.Println(a, b)
+}
+--------------------------------
+// 也可以像 cpp 一样 定义函数指针类型, 并且作为函数参数, 实现回调
+package main
+import "fmt"
+
+// 声明一个函数类型
+type cb func(int) int
+
+func main() {
+    testCallBack(1, callBack)
+    testCallBack(2, func(x int) int {
+        fmt.Printf("我是回调，x：%d\n", x)
+        return x
+    })
+}
+
+func testCallBack(x int, f cb) {
+    f(x)
+}
+
+func callBack(x int) int {
+    fmt.Printf("我是回调，x：%d\n", x)
+    return x
+}
+
+```
+
+
 
