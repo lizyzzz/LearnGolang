@@ -484,8 +484,93 @@ func (c Circle) getArea() float64 {
   return 3.14 * c.radius * c.radius
 }
 ```
+### 数组
+```
+// 声明数组
+// var arrayName [size]dataType
+var balance [10]float32 // 会默认初始化为 0.0
+// 数组初始化
+var numbers [5]int // 默认初始化
+var numbers = [5]int{1, 2, 3, 4, 5} // 初始化列表初始化
+numbers := [5]int{1, 2, 3, 4, 5}
+// 如果数组长度不确定，可以使用 ... 代替数组的长度，编译器会根据元素个数自行推断数组的长度
+var balance = [...]float32{1000.0, 2.0, 3.4, 7.0, 50.0}
+// 如果设置了数组的长度，我们还可以通过指定下标来初始化元素：
+//  将索引为 1 和 3 的元素初始化
+balance := [5]float32{1:2.0,3:7.0}
+// 如果忽略 [] 中的数字不设置数组大小，Go 语言会根据元素的个数来设置数组的大小
+-------------------------------------
+// 多维数组
+// var variable_name [SIZE1][SIZE2]...[SIZEN] variable_type
+package main
 
+import "fmt"
 
+func main() {
+    // Step 1: 创建数组
+    values := [][]int{}
+
+    // Step 2: 使用 append() 函数向空的二维数组添加两行一维数组
+    row1 := []int{1, 2, 3}
+    row2 := []int{4, 5, 6}
+    values = append(values, row1)
+    values = append(values, row2)
+
+    // Step 3: 显示两行数据
+    fmt.Println("Row 1")
+    fmt.Println(values[0])
+    fmt.Println("Row 2")
+    fmt.Println(values[1])
+
+    // Step 4: 访问第一个元素
+    fmt.Println("第一个元素为：")
+    fmt.Println(values[0][0])
+}
+// 输出结果
+Row 1
+[1 2 3]
+Row 2
+[4 5 6]
+第一个元素为：
+1
+// 初始化二维数组
+a := [3][4]int{  
+ {0, 1, 2, 3} ,   /*  第一行索引为 0 */
+ {4, 5, 6, 7} ,   /*  第二行索引为 1 */
+ {8, 9, 10, 11},   /* 第三行索引为 2 */ // 这里必须要有逗号
+}
+// 多维数组的各个维度元素数量可以不一样
+// 创建空的二维数组
+animals := [][]string{}
+
+// 创建三一维数组，各数组长度不同
+row1 := []string{"fish", "shark", "eel"}
+row2 := []string{"bird"}
+row3 := []string{"lizard", "salamander"}
+
+// 使用 append() 函数将一维数组添加到二维数组中
+animals = append(animals, row1)
+animals = append(animals, row2)
+animals = append(animals, row3)
+
+// 循环输出
+for i := range animals {
+  fmt.Printf("Row: %v\n", i)
+  fmt.Println(animals[i])
+}
+// 输出结果
+Row: 0
+[fish shark eel]
+Row: 1
+[bird]
+Row: 2
+[lizard salamander]
+
+// 数组可以作为函数参数, 同 cpp 一样, 类似传指针, 需要自己另外再传一个长度
+func getAverage(arr []int, size int) float32 {
+  // 函数体
+}
+```
 
 
 
