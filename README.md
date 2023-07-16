@@ -838,5 +838,140 @@ func main() {
     fmt.Println(sw.str)
 }
 ```
+### 错误处理
+Go 语言通过内置的错误接口提供了非常简单的错误处理机制。
+```
+// 定义 error 接口类型
+type error interface {
+    Error() string
+}
+// 我们可以在编码中通过实现 error 接口类型来生成错误信息。
+// 函数通常在最后的返回值中返回错误信息。
+// 使用 errors.New 可返回一个错误信息
+func Sqrt(f float64) (float64, error) {
+    if f < 0 {
+        return 0, errors.New("math: square root of negative number")
+    }
+    // 实现
+}
+// 调用代码
+result, err:= Sqrt(-1)
+if err != nil {
+   fmt.Println(err)
+}
+```
+### 并发
+Go 语言支持并发，我们只需要通过 go 关键字来开启 goroutine 即可。
+goroutine 是轻量级线程（协程），goroutine 的调度是由 Golang 运行时进行管理的。
+```
+// 语法形式
+go 函数名( 参数列表 )
+go f(x, y, z) // 开启一个线程
+-------------------------
+package main
+
+import (
+   "fmt"
+   "time"
+)
+
+func say(s string) {
+   for i := 0; i < 5; i++ {
+      time.Sleep(100 * time.Millisecond)
+      fmt.Println(s)
+   }
+}
+
+func main() {
+   go say("world")
+   say("hello")
+}
+// 输出(顺序不定)
+world
+hello
+hello
+world
+world
+hello
+hello
+world
+world
+hello
+```
+### 通道
+通道（channel）是用来传递数据的一个数据结构。  
+通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。 操作符 <- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。
+```
+ch <- v    // 把 v 发送到通道 ch
+v := <-ch  // 从 ch 接收数据
+           // 并把值赋给 v
+
+// 声明一个通道很简单，我们使用chan关键字即可，通道在使用前必须先创建：
+ch := make(chan int)
+/*
+注意：默认情况下，通道是不带缓冲区的。发送端发送数据，同时必须有接收端相应的接收数据。
+// 通道可以设置缓冲区，通过 make 的第二个参数指定缓冲区大小：
+ch := make(chan int, 100)
+不过由于缓冲区的大小是有限的，所以还是必须有接收端来接收数据的，否则缓冲区一满，数据发送端就无法再发送数据了。
+如果通道不带缓冲，发送方会阻塞直到接收方从通道中接收了值。
+如果通道带缓冲，发送方则会阻塞直到发送的值被拷贝到缓冲区内；
+如果缓冲区已满，则意味着需要等待直到某个接收方获取到一个值。接收方在有值可以接收之前会一直阻塞。
+*/
+package main
+
+import "fmt"
+
+func sum(s []int, c chan int) {
+   sum := 0
+   for _, v := range s {
+      sum += v
+   }
+   c <- sum // 把 sum 发送到通道 c
+}
+
+func main() {
+   s := []int{7, 2, 8, -9, 4, 0}
+   
+   c := make(chan int)
+   go sum(s[:len(s)/2], c)
+   go sum(s[len(s)/2:], c)
+   x, y := <-c, <-c // 从通道 c 中接收
+   
+   fmt.Println(x, y, x+y)
+}
+
+// 关闭通道
+v, ok := <-ch
+如果通道接收不到数据后 ok 就为 false，这时通道就可以使用 close() 函数来关闭。
+package main
+
+import (
+   "fmt"
+)
+
+func fibonacci(n int, c chan int) {
+   x, y := 0, 1
+   for i := 0; i < n; i++ {
+      c <- x
+      x, y = y, x+y
+   }
+   close(c)
+}
+
+func main() {
+   c := make(chan int, 10)
+   go fibonacci(cap(c), c)
+   // range 函数遍历每个从通道接收到的数据，因为 c 在发送完 10 个
+   // 数据之后就关闭了通道，所以这里我们 range 函数在接收到 10 个数据
+   // 之后就结束了。如果上面的 c 通道不关闭，那么 range 函数就不
+   // 会结束，从而在接收第 11 个数据的时候就阻塞了。
+   for i := range c {  // 如果 c 不关闭, 这里会阻塞
+      fmt.Println(i)
+   }
+}
+// 输出结果
+0 1 1 2 3 5 8 13 21 34
+```
+
 
 
