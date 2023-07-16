@@ -683,6 +683,24 @@ kvs := map[string]string{"a": "apple", "b": "banana"}
 for k, v := range kvs {
    fmt.Printf("%s -> %s\n", k, v)
 }
+```
+### map 类型
+map 是一种无序的键值对的集合。与 cpp 的 map 或 unordered_map 相似
+```
+// 创建语法
+map_variable := make(map[KeyType]ValueType, initialCapacity)
+// 容量会动态扩展
+// 使用字面量创建 Map
+m := map[string]int{
+    "apple": 1,
+    "banana": 2,
+    "orange": 3,
+}
+v1 := m["apple"]     // "查"
+v2, ok := m["pear"]  // 如果键不存在，ok 的值为 false，v2 的值为该类型的零值
+m["apple"] = 5       // "增" "改"
+delete(m, "banana")  // "删"
+len := len(m)        // 获取 Map 的长度
 
 ```
 
