@@ -701,7 +701,142 @@ v2, ok := m["pear"]  // 如果键不存在，ok 的值为 false，v2 的值为�
 m["apple"] = 5       // "增" "改"
 delete(m, "banana")  // "删"
 len := len(m)        // 获取 Map 的长度
+```
+### 接口类型 (多态 的类似实现)
+* Go 语言提供了另外一种数据类型即接口，它把所有的具有共性的方法定义在一起，任何其他类型只要实现了这些方法就是实现了这个接口。  
+* 接口可以让我们将不同的类型绑定到一组公共的方法上，从而实现多态和灵活的设计。  
+* Go 语言中的接口是隐式实现的，也就是说，如果一个类型实现了一个接口定义的所有方法，那么它就自动地实现了该接口。因此，我们可以通过将接口作为参数来实现对不同类型的调用，从而实现多态。
+```
+/* 定义接口 */
+type interface_name interface {
+   method_name1 [return_type]
+   method_name2 [return_type]
+   method_name3 [return_type]
+   ...
+   method_namen [return_type]
+}
+/* 定义结构体 */
+type struct_name struct {
+   /* variables */
+}
 
+/* 实现接口方法 */
+func (struct_name_variable struct_name) method_name1() [return_type] {
+   /* 方法实现 */
+}
+...
+func (struct_name_variable struct_name) method_namen() [return_type] {
+   /* 方法实现*/
+}
+----- 例子 ---------------------
+package main
+
+import "fmt"
+
+type Shape interface {
+    area() float64
+}
+
+type Rectangle struct {
+    width  float64
+    height float64
+}
+
+func (r Rectangle) area() float64 {
+    return r.width * r.height
+}
+
+type Circle struct {
+    radius float64
+}
+
+func (c Circle) area() float64 {
+    return 3.14 * c.radius * c.radius
+}
+
+func main() {
+    var s Shape
+
+    s = Rectangle{width: 10, height: 5}
+    fmt.Printf("矩形面积: %f\n", s.area())
+
+    s = Circle{radius: 3}
+    fmt.Printf("圆形面积: %f\n", s.area())
+}
+```
+### 类型转换
+```
+// 基本格式
+type_name(expression)
+var a int = 10
+var b float64 = float64(a)
+// 字符串 / 数字 转换
+package main
+
+import (
+    "fmt"
+    "strconv" // 包含头文件
+)
+
+func main() {
+    // 字符串 转 数字
+    str := "123"
+    num, err := strconv.Atoi(str)  // err 参数为错误
+    if err != nil {
+        fmt.Println("转换错误:", err)
+    } else {
+        fmt.Printf("字符串 '%s' 转换为整数为：%d\n", str, num)
+    }
+    // 数字 转 字符串
+    num := 123
+    str := strconv.Itoa(num)
+    fmt.Printf("整数 %d  转换为字符串为：'%s'\n", num, str)
+}
+------------------------------------
+// 接口类型转换
+接口类型转换有两种情况：类型断言和类型转换。
+类型断言用于将接口类型转换为指定类型，其语法为：
+value.(type) 
+或者 
+value.(T)  // 其中 value 是接口类型的变量，type 或 T 是要转换成的类型。
+T(value)   // 接口类型之间也可以互相转换
+----------------------------------
+package main
+import "fmt"
+
+func main() {
+   var i interface{} = "Hello, World"
+   str, ok := i.(string)
+   if ok {
+     fmt.Printf("'%s' is a string\n", str)
+   } else {
+     fmt.Println("conversion failed")
+   }
+}
+----------------------------------
+package main
+
+import "fmt"
+
+type Writer interface {
+    Write([]byte) (int, error)
+}
+
+type StringWriter struct {
+    str string
+}
+
+func (sw *StringWriter) Write(data []byte) (int, error) {
+    sw.str += string(data)
+    return len(data), nil
+}
+
+func main() {
+    var w Writer = &StringWriter{}
+    sw := w.(*StringWriter) // 接口类型转换为 *StringWriter (相当于基类转换为子类)
+    sw.str = "Hello, World"
+    fmt.Println(sw.str)
+}
 ```
 
 
