@@ -627,4 +627,63 @@ func main() {
 var struct_pointer *struct_variable_type
 // 使用结构体指针访问结构体成员，使用 "." 操作符(与 cpp 的 -> 不同)
 ```
+### 切片
+类似 cpp 中的 vector 数组
+```
+// 语法形式
+// var identifier []type // 不用说明长度
+/*
+   可以使用 make() 函数来创建切片
+   var slice1 []type = make([]type, len)
+   slice1 := make([]type, len)
+   make([]T, length, capacity)  // 指定容量
+// 切片初始化
+s :=[]int {1,2,3} // 直接初始化
+s := arr[:]       // 以数组 arr 初始化
+s := arr[startIndex:endIndex]  // s 以 arr 中从下标 startIndex 到 endIndex-1 下的元素
+s := arr[startIndex:]          // 默认 endIndex 时将表示一直到arr的最后一个元素
+s := arr[:endIndex]            // 默认 startIndex 时将表示从 arr 的第一个元素开始
+s :=make([]int,len,cap)        // 通过内置函数 make() 初始化切片s
+
+// len() 和 cap() 函数
+len(x) 和 cap(x) 返回 x 的长度和容量
+// 一个切片在未初始化之前默认为 nil，长度为 0
+var numbers []int
+if(numbers == nil){
+   // true
+}
+// append() 和 copy() 函数
+ // append() 相当于 push_back() 方法
+var numbers []int
+numbers = append(numbers, 0)
+numbers = append(numbers, 1)
+numbers = append(numbers, 2,3,4)
+// copy() 函数, 需要保证 copy() 的结果数组有足够的长度
+copy(numbers1, numbers[1:])  // 把 number 的[1,end]拷贝给 numbers1
+*/
+```
+### 范围 range
+range 关键字用于 for 循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素。在数组和切片中它返回元素的索引和索引对应的值，在集合中返回 key-value 对
+```
+// 语法格式
+for key, value := range oldMap {
+    newMap[key] = value
+}
+// 只读取 key
+for key := range oldMap
+for key, _ := range oldMap
+// 只读取 value
+for _, value := range oldMap
+---------------------------------
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+for i, v := range pow {
+   fmt.Printf("2**%d = %d\n", i, v)
+}
+kvs := map[string]string{"a": "apple", "b": "banana"}
+for k, v := range kvs {
+   fmt.Printf("%s -> %s\n", k, v)
+}
+
+```
+
 
