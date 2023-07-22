@@ -34,3 +34,24 @@ func g() {
 }
 ```
 * 垃圾回收机制对写出正确的代码很有帮助，但要注意变量的生命周期。
+* 多重赋值问题，在实际更新变量前，右边所有的表达式被推演。
+```
+x, y = y, x // 交换 x y 的值
+// 求最大公约数
+func gcd(x, y int) int {
+  for y != 0 {
+    x, y = y, x % y
+  }
+}
+```
+* 类型声明(别名)：如果名字是导出的(首字母大写)，其它包也可以访问.
+```
+// type name underlying-type
+type Index int
+type Loop int
+// Index Loop 虽然底层都是int，但是是不同的类型
+var i Index = 1
+var l Loop = Loop(i) // 显式类型转换  
+
+```
+
