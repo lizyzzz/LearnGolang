@@ -61,7 +61,6 @@ type Loop int
 // Index Loop 虽然底层都是int，但是是不同的类型
 var i Index = 1
 var l Loop = Loop(i) // 显式类型转换  
-
 ```
 ## 第 3 章容易混淆知识点
 * 类型转换要显示进行，例如：int 和 int32 不是同一种类型，尽管它们可能都是32位来表示。使用时需要显式转换。
