@@ -143,7 +143,40 @@ endless := summer[:5]    // 在 slice 容量范围扩展了 slice
 // (4) 注意 string 和 []byte 的区别，x[m:n]都返回原始字节的一个子序列，都是常量时间，引用方式也相同。区别在于 string 返回的是一个字符串, []byte返回的是一个字节slice
 // (5) 因为 slice 包含了指向数组元素的指针, 所以将一个 slice 传递给函数时, 可以被修改。相当于创建了一个别名。
 // (6) 不能对两个 slice 做比较, 标准库提供 bytes.Equal 来比较两个字节 slice，但其他类型的 slice 只能自己写函数来比较。
+// (7) 值为 nil 的没有对应的底层数组，容量和长度都是 0, 但容量和长度都是 0 的 slice 不一定为 nil, 如 []int{}
+// (8) make() 函数可以创建一个 slice
+make([]T, len) // 引用整个数组, len == cap
+make([]T, len, cap) // 引用 len 个, len <= cap
+// (9) 使用 append 函数 将元素追加到 slice 后面。扩容策略与 cpp 的 vector 一样。
+str := "hello"
+s := make([]string, 0, 10)
+s = append(s, str) // 这里的返回值底层数组可能发生变化，所以要接受返回值
+s = append(s, str, str, str) // 这里的参数可以变化
+// (10) slice 可以使用 reverse, rotate 等函数实现就地修改 slice 元素。
 ```
+* map: 类型是 map[k]v， 也是引用类型
+```
+// (1) 键的类型必须可 == 比较。
+ages := map[string]int {
+  "alice": 31,
+  "charlie": 34,
+}
+等价于
+ages := make(map[string]int)
+ages["alice"] = 31
+ages["charlie"] = 34
+ages := map[string]int{} // 新的空的map
+// (2) 增改查删
+ages["alice"] = 10 // 增改查
+delete(ages, "alice") // 删
+// (3) map 的顺序是不一定的
+// (4) map 必须初始化才能使用
+var ages map[string]int
+ages["bob"] = 20 // 错误, 为 nil 值 map 赋值
+// (5) map 不可比较
+// (6) 当 key 不可比较时，可以自定义一个函数, 先把不可比较的 key 映射到唯一的可比较类型集合
+```
+
 
 
   
