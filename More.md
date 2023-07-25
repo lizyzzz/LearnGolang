@@ -176,6 +176,58 @@ ages["bob"] = 20 // 错误, 为 nil 值 map 赋值
 // (5) map 不可比较
 // (6) 当 key 不可比较时，可以自定义一个函数, 先把不可比较的 key 映射到唯一的可比较类型集合
 ```
+* 结构体：
+```
+// (1) 结构体变量用 '.' 来访问属性，结构体指针也是用 '.' 来访问属性。
+// (2) 成员变量的顺序影响结构体的同一性，顺序不一样结构体类型也不同。首字母大写的成员变量可导出(其他包可见)，首字母小写的不可导出。
+// (3) 结构体初始化：1) 通过结构体字面量按顺序初始化；2) 通过变量名称和值来初始化。
+/* 两种初始化方式不可混用, 也无法使用第一种初始化方式绕过不可导出的变量在其他包不可使用的原则 */
+p := image.Point{1, 2}
+p2 := image.Point{x: 1}
+// (4) 结构体作函数参数时，通常用指针, 避免复制。
+pp := &Point{1, 2} // 一种创建结构体指针的便捷方法
+// (5) 如果结构体的成员可比较，那么结构体也可比较。
+// (6) 结构体嵌套和匿名成员
+type Point struct {
+  X, Y int
+}
+type Circle struct {
+  Center Point
+  Raidus int
+}
+type Wheel struct {
+  Circle Circle
+  Spokes int
+}
+
+var w Wheel
+w.Circle.Center.X  = 8 // 访问太长了
+---------------- 匿名成员 --------------------------
+type Circle struct {
+  Point
+  Radius int
+}
+type Wheel struct {
+  Circle
+  Spokes int
+}
+var w Wheel
+w.X  = 8  // 等价于 w.Circle.Point.X
+/* (即使 circle point 是不可导出的匿名成员，省略形式依然有效, 但注释中的写法无效) */
+/* 不能通过结构体字面量的方式初始化 */
+w = Wheel{8, 8, 5, 20}  // 错误
+w = Wheel{X: 8, Y: 8, Radius: 5, Spokes: 20} // 错误
+w = wheel{Circle{Point{8, 8}, 5}, 20} // 正确
+w = wheel{
+  Circle: Circle{
+    Point: Point{8, 8},
+    Radius: 5, // 逗号不能漏
+  },
+  Spokes: 20, // 逗号不能漏
+} // 正确
+```
+* JSON
+
 
 
 
