@@ -226,7 +226,73 @@ w = wheel{
   Spokes: 20, // 逗号不能漏
 } // 正确
 ```
-* JSON
+* JSON (JavaScript对象表示法)
+```
+boolean     true
+number      -273.15
+string      "She said \"hello, 世界\""
+array       ["gold", "silver", "bronze"]
+object      {"year": 1990,
+             "event": "archery",
+             "medals": [["gold", "silver", "bronze"]]}
+// (1) 把 Go 的数据结构转换为 JSON 称为 marshal, 通过 json.Marshal 实现。
+type Movie struct {
+  Title string
+  Year  int   `json:"released"`         // 输出别名
+  Color bool  `json:"color,omitempty"`  // omitempty 表示是零值或空值可以不解析
+  Actors []string
+}
+var movies = []Movies {
+  {Title: "Casablanca", Year: 1942, Color: false,
+    Actors: []string{"Humphrey Bogart", "Ingrid Bergman"}},
+  {Title: "Cook Hand Luke", Year: 1967, Color: true,
+    Actors: []string{"Paul Newman"}}
+}
+
+data, err := json.Marshal(movies)
+if err != nil {
+  Log.Fatalf("JSON marshaling failed: %s", err)
+}
+fmt.Printf("%s\n", data)
+/* 输出 不带任何空格*/
+[{"Title":"Casablanca","released":1942,"Actors":["Humphrey Bogart",
+"Ingrid Bergman"]},{"Title":"Cook Hand Luke","released":1967,"colo
+r":true,"Actors":["Paul Newman"]}]
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+data, err := json.MarshalIndent(movies, "", "    ") // 每行输出的前缀, 缩进的字符串
+if err != nil {
+  Log.Fatalf("JSON marshaling failed: %s", err)
+}
+fmt.Printf("%s\n", data)
+/* 格式化输出 */
+[
+    {
+        "Title": "Casablanca",
+        "released": 1942,
+        "Actors": [
+            "Humphrey Bogart",
+            "Ingrid Bergman"
+        ]
+    },
+    {
+        "Title": "Cook Hand Luke",
+        "released": 1967,
+        "color": true,
+        "Actors": [
+            "Paul Newman"
+        ]
+    }
+]
+// (2) 把 JSON 转换为 Go 的数据结构 称为 unmarshal, 通过 json.unMarshal 实现。(可以只解析对应字段)
+var title []struct{ Title string }
+if err := json.unMarshal(data, &titles); err != nil {
+  Log.Fatalf("JSON unmarshaling failed: %s", err)
+}
+fmt.Println(titles) // [{Casablanca} {Cook Hand Luke}]
+// (3) json.Encoder, json.Decoder 也可以实现对应的功能。
+```
+
 
 
 
