@@ -292,7 +292,16 @@ if err := json.unMarshal(data, &titles); err != nil {
 fmt.Println(titles) // [{Casablanca} {Cook Hand Luke}]
 // (3) json.Encoder, json.Decoder 也可以实现对应的功能。
 ```
-
+## 第 5 章容易混淆知识点
+```
+// (1) 函数参数没有默认参数的概念。
+// (2) 函数返回值也可以先指定名字。(类似 matlab)
+func sub(x, y int) (z int) {
+  z = x - y
+  return
+}
+// (3) 函数也可以没有函数体，说明该函数使用除了 GO 以外的语言实现。
+```
 
 
 
