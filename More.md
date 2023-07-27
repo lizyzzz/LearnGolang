@@ -309,6 +309,13 @@ func sub(x, y int) (z int) {
     d. 利用日志记录错误，继续运行下去。
     e. 直接忽略整个错误日志。（很少用）
 // (6) io.EOF 表示文件尾，这是一个错误。
+// (7) 函数可以是变量类型 (类似 cpp 的函数指针), 且可以与 nil 比较
+func square(n int) int {
+  return n*n
+}
+
+f := square // f 的类型是 func(int) int
+// (8) 匿名函数与函数闭包
 ```
 
 
