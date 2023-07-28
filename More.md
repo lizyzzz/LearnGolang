@@ -315,7 +315,43 @@ func square(n int) int {
 }
 
 f := square // f 的类型是 func(int) int
-// (8) 匿名函数与函数闭包
+// (8) 匿名函数与函数闭包：注意捕获的变量。
+func squares() func() int {
+  var x int  // 逃逸 squares() 函数, 生命周期变长
+  return func() int {
+    x++
+    return x * x
+  }
+}
+func main {
+  f := squares()
+  fmt.Println(f()) // "1"
+  fmt.Println(f()) // "4"
+  fmt.Println(f()) // "9"
+  fmt.Println(f()) // "16"
+}
+----------------------------------------
+捕获迭代变量的坑
+var rmdirs []func()
+for _, d := range tempDirs() {
+  dir := d  // 创建一个副本
+  os.MkdirAll(dir, 0755)
+  rmdirs = append(rmdirs, func() {
+    os.RemoveAll(dir) // 捕获的是 dir 是内部变量
+  })
+}
+/*  处理一些事情  */
+for _, rmdir := range rmdirs {
+  rmdir(); // 清理
+}
+// 如果换成下面的捕获错误
+for _, dir := range tempDirs() {
+  os.MkdirAll(dir, 0755)
+  rmdirs = append(rmdirs, func() {
+    os.RemoveAll(dir) // 捕获的是 dir 是共享变量--一个可访问的存储位置，而不是固定的值
+  })
+}
+
 ```
 
 
