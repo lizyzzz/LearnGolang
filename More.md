@@ -351,7 +351,34 @@ for _, dir := range tempDirs() {
     os.RemoveAll(dir) // 捕获的是 dir 是共享变量--一个可访问的存储位置，而不是固定的值
   })
 }
+// (8) 变长函数 (即可变参数)
+func sum(vals ...int) int {
+  total := 0
+  for _, val := range vals {
+    total += val
+  }
+  return total
+}
 
+fmt.Println(sum()) // "0"
+fmt.Println(sum(3)) // "3"
+fmt.Println(sum(1, 2, 3, 4)) // "10"
+//  slice 做可变参数
+values := []int{1, 2, 3, 4}
+sum(values...)
+// (9) 延迟函数 defer
+  a. 就是在一个普通的函数或方法调用，在调用之前加上关键字 defer。 : 实际的调用推迟到包含 defer 语句的函数结束后才执行
+  b. 可以有多个 defer ，执行时以调用 defer 语句顺序的倒序执行。
+var mu sync.Mutex
+var m = make(map[string]int)
+func lookup (key string) int {
+  mu.Lock()
+  defer mu.Unlock()
+  return m[key]
+}
+// 宕机与恢复
+panic() 和 assert() 类似
+recover 函数： 终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
 ```
 
 
