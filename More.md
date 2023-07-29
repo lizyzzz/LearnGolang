@@ -377,7 +377,7 @@ func lookup (key string) int {
   return m[key]
 }
 // (10) 宕机与恢复
-panic() 和 assert() 类似
+panic() 和 assert() 类似，但 panic() 可以接受非 bool 的参数
 recover 函数： 终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
 ```
 
