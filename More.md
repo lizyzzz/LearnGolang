@@ -416,10 +416,27 @@ func (p *Point) ScaleBy(factor float64) {
   p.Y *= factor
 }
 /* 调用方法 */
-
+p := Point{1, 2}
+pptr := &p
+pptr.ScaleBy(2)
+r := &Point{1, 2}
+r.ScaleBy(2)
+(&p).ScaleBy(2)
+------------------
+/* 但如果方法只要求一个 *Point 接受者 */
+// 其中 p 是 Point 类型的 变量 。可以简写为
+p.ScaleBy(3)
+/* 编译器会对变量进行 &p 的隐式转换。只有变量才能这样做。
+   不能对一个不能取地址的变量这样做。
+   Point{1, 2}.ScaleBy(2) // 错误
+*/
+/* 同样方法只要求一个 Point 接受者  */
+// 指针类型也可以隐式转换为 *pptr
+pptr.Distance(q) // 对变量进行 *pptr 的隐式转换
 // (2) 但本身就是指针类型的类型不能声明方法
 type PtrInt *int
 func (p PtrInt) f() { } // 编译错误
+// (3) nil 是一个合法的接收值
 ```
 
 
