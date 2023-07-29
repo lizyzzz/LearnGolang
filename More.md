@@ -376,7 +376,7 @@ func lookup (key string) int {
   defer mu.Unlock()
   return m[key]
 }
-// 宕机与恢复
+// (10) 宕机与恢复
 panic() 和 assert() 类似
 recover 函数： 终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
 ```
