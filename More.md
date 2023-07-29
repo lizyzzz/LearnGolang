@@ -438,6 +438,25 @@ type PtrInt *int
 func (p PtrInt) f() { } // 编译错误
 // (3) nil 是一个合法的接收值
 ```
+* 结构体内嵌组成类型的方法
+```
+// (1) 内嵌了组成类型，组成类型的方法也可以调用。(并非继承，而是对象内嵌对象)
+// (2) 匿名字段可以是个指向命名类型的指针。同样可以调用对应类型的方法。
+// (3) 当有两个或以上内嵌字段，有同样的方法名时，编译器会报告错误。 
+```
+* 方法变量与方法表达式
+```
+// (1) 方法变量
+p := Point{1, 2}
+q := Point{4, 6}
+distanceFromP := p.Distance  // 方法变量, 指定了接受者是 p
+fmt.Println(distanceFromP(q)) // "5"
+// (2) 方法表达式
+distance = Point.Distance // 方法表达式, 类似 cpp bind() 函数绑定成员函数
+fmt.Println(distance(p, q)) // 相当于调用 p.Distance(p), 第一个参数指定调用对象
+```
+
+
 
 
 
