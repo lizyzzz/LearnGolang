@@ -402,7 +402,25 @@ func soleTitle(element int) (title string, err error) {
   return title, nil
 }
 ```
+## 第 6 章容易混淆的知识点
+* 方法声明
+```
+// (1) 方法名和成员变量名不能一样。
+// (2) 与其他面向对象的语言不一样，Go 可以把方法绑定到任何类型上 (指针类型和接口类型除外)。
+```
+* 指针接受者的方法
+```
+// (1) 可以把接受者绑定到指针类型。
+func (p *Point) ScaleBy(factor float64) {
+  p.X *= factor
+  p.Y *= factor
+}
+/* 调用方法 */
 
+// (2) 但本身就是指针类型的类型不能声明方法
+type PtrInt *int
+func (p PtrInt) f() { } // 编译错误
+```
 
 
 
