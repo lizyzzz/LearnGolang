@@ -378,7 +378,29 @@ func lookup (key string) int {
 }
 // (10) 宕机与恢复
 panic() 和 assert() 类似，但 panic() 可以接受非 bool 的参数
-recover 函数： 终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
+recover 函数： 只能在defer 函数里执行。终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
+func soleTitle(element int) (title string, err error) {
+  type bailout struct{}
+  defer func() {
+    switch p := reover(); p {
+      case nil:
+        // 没有宕机
+      case bailout{}:
+        err = fmt.Errorf("预期的宕机")
+      default:
+        panic(p) // 未预期的宕机，继续宕机过程
+    }
+  }()
+
+  /* do something with title */
+  if title == "xxx" {
+    panic(bailout{})
+  }
+  if title == "" {
+    return "", fmt.Errorf("no title")
+  }
+  return title, nil
+}
 ```
 
 
