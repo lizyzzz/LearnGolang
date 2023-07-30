@@ -461,8 +461,17 @@ fmt.Println(distance(p, q)) // 相当于调用 p.Distance(p), 第一个参数指
 ## 第 7 章--接口 容易混淆的知识点
 一个接口类型定义了一套方法，如果一个具体类型要实现该接口，那么必须实现接口类型定义中的所有方法。  
 使用时以接口类型做形参，具体类型做实参。注意：接口类型可以组合
+* 实现接口
 ```
+// (1) 类型 *T 实现了部分方法，但是类型 T 的变量可以直接调用 *T 的方法。这仅仅是个语法糖。
+// 接口只能接受对应的 T 或 T* 类型。
+type InSet struct {/*...*/}
+func (* IntSet) String() string
 
+var s IntSet
+var _ = s.String() // 正确 (&s).String()
+var _ fmt.Stringer = &s  // 正确
+var _ fmt.Stringer = s   // 编译错误
 ```
 
 
