@@ -472,7 +472,35 @@ var s IntSet
 var _ = s.String() // 正确 (&s).String()
 var _ fmt.Stringer = &s  // 正确
 var _ fmt.Stringer = s   // 编译错误
+// (2) 空接口类型可以接受任何值的赋值。但不能使用其中的值。需要一个方法还原其中的值。
+var any interface{}
+any = true
+any = 12.34
+any = "hello"
+any = map[string]int{"one": 1}
+any = new(bytes.Buffer)
 ```
+* 使用 flag.Value 接口来解释参数
+```
+package flag
+/* 需要从命令行解析参数的类型实现该接口类型 */
+type Value interface {
+  String() string
+  Set(string) err
+}
+fmt.CommandLine.Var(v Value, name string. usage string) // 以-name解析参数
+// 使用方法例子 : ./bin -name val
+```
+* 接口值
+一个接口类型的值（接口值）包括两个部分：一个具体类型和该具体类型的一个值。二者称为接口的动态类型和动态值。接口的零值就是动态类型和值都为 nil。
+```
+// (1) 一个接口值是否是 nil 取决于它的动态类型，可以用 == nil 或 != nil 来判断。调用一个 nil 接口的任何方法都会导致崩溃。
+// (2) 接口值可以用 == 和 != 比较的，两接口值都为 nil 或 二者的动态类型完全一致且二者动态值相等。可以作为 map 的键值。
+/* 值得注意的是 当动态类型一致时，但动态类型的值是不可比较的，那么这个比较方式会崩溃 */
+// (3) 可以 %T 打印 接口的动态类型，利用反射（后续讲到）
+// (4) 接口值为 nil 和 仅仅动态值为 nil 是不一样的。
+```
+
 
 
 
