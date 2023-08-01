@@ -522,6 +522,17 @@ rw = w.(io.ReadWriter) // 崩溃： *ByteCounter 没有 Read 办法
 f := w.(*os.File) // 成功 f == os.Stdout(动态值), ok == true
 c := w.(*bytes.Buffer) // 失败 f == nil, ok == false
 ```
+* 类型分支
+```
+/* 注意： 分支类型不允许使用 fallthrough */
+switch x := x.(type) { // x 会被覆盖, 提取类型被下面复用
+case nil: // ...
+case int, uint: // ...
+case bool:  // ...
+case string: // ...
+default:  // ...
+}
+```
 
 
 
