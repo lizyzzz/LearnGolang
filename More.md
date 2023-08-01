@@ -500,6 +500,27 @@ fmt.CommandLine.Var(v Value, name string. usage string) // 以-name解析参数
 // (3) 可以 %T 打印 接口的动态类型，利用反射（后续讲到）
 // (4) 接口值为 nil 和 仅仅动态值为 nil 是不一样的。
 ```
+* 类型断言
+类型断言是一个作用在接口值上的操作，写出来类似于 x.(T), 其中 x 是一个接口类型的表达式，而 T 是一个类型(称为断言类型)。
+```
+// (1)如果断言类型 T 是一个具体类型，那么类型断言会检查 x 的动态类型是否 `就是` T 。
+// 成功则返回 x 的动态值
+var w io.Writer
+w = os.Stdout
+f := w.(*os.File) // 成功 f == os.Stdout(动态值)
+c := w.(*bytes.Buffer) // 崩溃：接口持有的是 *os.File, 不是 *bytes.Buffer
+// (2)如果断言类型 T 是一个接口类型，那么类型断言会检查 x 的动态类型是否 `满足` T 。
+// 成功则返回一个接口值，接口值的类型和值部分没有变更。
+var w io.Writer
+w = os.Stdout
+rw := w.(io.ReadWriter) // 成功, *os.File 有 Read 和 Write 方法, 也属于 io.ReadWriter 接口
+w = new(ByteCounter)
+rw = w.(io.ReadWriter) // 崩溃： *ByteCounter 没有 Read 办法
+// (3) 如果操作数是一个空接口值，类型断言都失败。
+// (4) 很少需要从一个接口类型向一个要求更宽松的类型做类型断言。
+```
+
+
 
 
 
