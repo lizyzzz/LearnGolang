@@ -518,6 +518,9 @@ w = new(ByteCounter)
 rw = w.(io.ReadWriter) // 崩溃： *ByteCounter 没有 Read 办法
 // (3) 如果操作数是一个空接口值，类型断言都失败。
 // (4) 很少需要从一个接口类型向一个要求更宽松的类型做类型断言。
+// (5) 使用两个返回值，不会直接崩溃。
+f := w.(*os.File) // 成功 f == os.Stdout(动态值), ok == true
+c := w.(*bytes.Buffer) // 失败 f == nil, ok == false
 ```
 
 
