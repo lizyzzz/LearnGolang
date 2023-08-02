@@ -566,6 +566,7 @@ func main {
   conn.Close()
   <- done // 等待 go func() 结束
 }
+// (2) 通道也可以被垃圾回收机制回收。
 ```
 * 管道
 通道可以用来连接 goroutine，这样一个的输出是另一个的输入，就叫管道 (pipeline)。
@@ -612,8 +613,20 @@ func main() {
 */
 ```
 * 缓冲通道
+缓冲通道的大小由 make() 创建
 ```
-
+// (1) 发送操作在队尾插入一个元素，接受操作从队头移除一个元素。
+// 通道满时，发送操作会阻塞，通道为空时接收操作会阻塞。
+// 可以用 cap(ch) 获得通道的容量, len(ch) 获得通道的元素个数但是意义不大，并发情况下很快失效。
+// (2) goroutine 泄漏
+/* 如果 resp 换成无缓冲通道，两个较慢的 goroutine 会被卡住，因为没有对应的 goroutine 接收，这时发生 goroutine 泄漏  */
+func mirrorQuery() string {
+  resp := make(chan string, 3)
+  go func() { resp <- request("asia.gopl.io") }()
+  go func() { resp <- request("europe.gopl.io") }()
+  go func() { resp <- request("usa.gopl.io") }()
+  return <-resp // 返回最早得到的镜像
+}
 ```
 
 
