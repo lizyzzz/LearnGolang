@@ -533,6 +533,64 @@ case string: // ...
 default:  // ...
 }
 ```
+## 第 8 章--goroutine和通道 容易混淆知识点
+* 通道
+通道是可以让一个 goroutine 发送特定值到另一个 goroutine 的通信机制。
+```
+// (1) 创建通道
+ch := make(chan int)
+ch := make(chan int, 3) // 带缓冲
+ch <- x // 发送语句
+x = <-ch // 接收语句并赋值，x 未被使用也是合法的。
+// (2) 通道类型可以比较，引用同一份数据结构时 == ，否则 != , 也可以与 nil 比较。
+// (3) 关闭后的发送操作将导致宕机，在已经关闭的通道上进行接收，会接收剩余的值，直到通道为空；再继续接收会收到通道元素类型的零值。
+close(ch) // 关闭通道 
+```
+* 无缓冲通道
+无缓冲通道上的发送操作将会阻塞，直到另一个 goroutine 在对应的通道上执行接收操作。
+如果接收操作先执行，接收方 goroutine 将阻塞，直到另一个 goroutine 在同一个通道上发送值。
+```
+// (1) 使用无缓冲通道进行的通信导致发送和接收 goroutine 同步化。因此，无缓冲通道也称为同步通道。
+func main {
+  conn, err := net.Dial("tcp", "localhost:8000")
+  if err != {
+    log.Fatal(err)
+  }
+  done := make(chan struct{})
+  go func() {
+    io.Copy(os.Stdout, conn)
+    log.Println("done")
+    done <- struct{}{}
+  }()
+  mustCopy(conn, os.Stdin)
+  conn.Close()
+  <- done // 等待 go func() 结束
+}
+```
+* 管道
+通道可以用来连接 goroutine，这样一个的输出是另一个的输入，就叫管道 (pipeline)。
+```
+// (1) 通知接收方通道是否关闭
+go func() {
+  for (
+    x, ok := <- naturals
+    if !ok {
+      break // 通道关闭并读完
+    }
+    squares <- x * x
+  )
+  close(naturals)
+}
+/* 更普遍地，用 range */
+go func() {
+  for x := range naturals (
+    squares <- x * x
+  )
+  close(naturals)
+}
+// (2) 试图关闭一个已经关闭的通道会到值宕机，就像关闭一个空通道一样。
+```
+
 
 
 
