@@ -590,6 +590,32 @@ go func() {
 }
 // (2) 试图关闭一个已经关闭的通道会到值宕机，就像关闭一个空通道一样。
 ```
+* 单向通道类型
+chan<- int 是一个只能发送 int 类型的通道。允许发送但不能接收。
+<-chan int 是一个只能接收 int 类型的通道。允许接收但不能发送。
+```
+// 上述例子变化成
+func counter(out chan<- int) {/* ... */}
+func squarer(out chan<- int, in <-chan int) {/* ... */}
+func printer(in <-chan int) {/* ... */}
+func main() {
+  naturals := make(chan int)
+  squares := make(chan int)
+
+  go counter(naturals)
+  go squarer(squares, naturals)
+  printer(squares)
+}
+/*
+  注意： close 操作只能在发送方调用，在仅能接收的通道上调用，编译会报错
+  在任何赋值操作中将双向通道转换为单向通道都是允许的，但反过来不行。
+*/
+```
+* 缓冲通道
+```
+
+```
+
 
 
 
