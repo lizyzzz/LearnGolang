@@ -645,7 +645,7 @@ select {
     // ...
   case x := <-ch2:
     // ...
-  case ch3 <- y:
+  case ch3 <- y: // 有 goroutine 接收时才会准备好
     // ...
   default:
     // ...
@@ -679,6 +679,30 @@ for {
   case size, ok := <-fileSizes:
     // ...
   }
+}
+```
+## 第 9 章--使用共享变量实现并发 容易混淆的知识点
+* 锁
+```
+// (1) 类型 sync.Mutex
+// 成员函数 Lock() 上锁, Unlock() 解锁.
+// 通常使用 defer 搭配 Unlock() 使用.
+
+// (2) 类型 sync.RWMutex (读写锁)
+// 读锁: RLock() 上锁, RUnlock() 解锁
+// 写锁: Lock() 上锁, Unlock() 解锁
+```
+* 内存宽松模型 (同 cpp)
+* sync.Once (同 cpp 的 call_once() 函数 和 once_flag 变量)
+sync.Once 包含一个 bool 变量 和 一个互斥量, 有唯一 Do() 方法
+```
+var loadIconsOnce sync.Once
+var icons map[string]image.Image
+func loadIcons() {/*...*/} // 初始化 icons 函数
+// 并发安全的
+func Icon(name string) image.Image {
+  loadIconsOnce.Do(loadIcons) // 只调用一次
+  return icons[name]
 }
 ```
 
