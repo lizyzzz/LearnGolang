@@ -628,6 +628,29 @@ func mirrorQuery() string {
   return <-resp // 返回最早得到的镜像
 }
 ```
+* 使用 select 多路复用
+```
+// (1) select 有一系列的情况和一个可选的默认分支。每一个情况指定一次 `通信`(在一些通道上进行发送和接收操作) 和关联的一段代码块。
+select {
+  case <-ch1:
+    // ...
+  case x := <-ch2:
+    // ...
+  case ch3 <- y:
+    // ...
+  default:
+    // ...
+}
+// (2) 当对一个缓冲区容量大于1时，在既有输入又有输出的情况不可确定。
+for i := o; i < 10; i++ {
+  select {
+  case x := <-ch: 
+    fmt.Println(x)
+  case ch <- i:
+  }
+}
+```
+
 
 
 
