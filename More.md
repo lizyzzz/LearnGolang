@@ -627,6 +627,13 @@ func mirrorQuery() string {
   go func() { resp <- request("usa.gopl.io") }()
   return <-resp // 返回最早得到的镜像
 }
+// (3) 模拟令牌使用
+var sema = make(chan struct{}, 10)
+go func() {
+  sema <- struct{} // 获取令牌
+  /* do something... */
+  <-sema  // 释放令牌
+}
 ```
 * 使用 select 多路复用
 ```
