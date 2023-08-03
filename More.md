@@ -659,6 +659,28 @@ for i := o; i < 10; i++ {
   }
 }
 ```
+* 取消 goroutine 的广播机制
+```
+// (1) 当一个通道关闭且已读取完所有发送的值之后，接下来的接收操作立即返回，得到零值。
+// 广播机制：不在通道上发送值，而是关闭它。
+var done = make(chan struct{})
+// 监测到有键盘输入时广播取消事件
+go func() {
+  os.Stdin.Read(make([]byte, 1))
+  close(done)
+}
+for {
+  select {
+  case <-done:
+    for range fileSizes {
+      // 耗尽 fileSizes 通道中的元素
+    }
+    return
+  case size, ok := <-fileSizes:
+    // ...
+  }
+}
+```
 
 
 
