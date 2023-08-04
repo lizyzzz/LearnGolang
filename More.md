@@ -756,6 +756,22 @@ go get gopl.io/...
 
 // (8) 包的文档化: 可以用 go doc 查看包或包成员的文档。
 go doc time
+
+// (9) 内部包: 没有导出的标识符只能在同一个包内访问。
+// go build 工具会特殊对待导入路径中包含路径片段 internal 的情况。这些包叫内部包。
+// 内部包只能被另一个包导入，这个包位于以 internal 目录的父目录为根目录的树中。
+net/http  // 可以导入 a
+net/http/internal/chunked // a
+net/http/httputil // 可以导入 a
+net/url // 不可以导入 a
+
+// (10) 包的查询: go list
+// 判断一个包是否存在于工作空间中，如果存在输出它的导入路径
+$ go list github.com/go-sql-driver/mysql
+go list github.com/go-sql-driver/mysql
+// go list ... 可以枚举工作空间所有包。
+// go list gopl.io/ch3/... 枚举子树中所有的包
+// go list ...xml... 枚举一个具体的主题
 ```
 
 
