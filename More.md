@@ -727,6 +727,7 @@ func Icon(name string) image.Image {
 // (4) goroutine 没有标识
 ```
 ## 第 10 章--包和 go 工具 容易混淆的知识点
+![image-2](https://github.com/lizyzzz/LearnGolang/blob/main/images/2.png)
 * 包
 ```
 // (1) 导入声明可以给包重命名。防止同名，防止与变量同名
