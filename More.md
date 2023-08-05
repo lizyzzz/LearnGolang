@@ -860,8 +860,62 @@ reflect.Bool
 reflect.String
 reflect.chan reflect.Func reflect.Ptr reflect.Slice reflect.Map
 // 省略了浮点数和复数类型没写出来。
-```
 
+// (3) 使用 reflect.Value 来设置值
+// 一个变量是一个可寻址的存储区域，其中包含了一个值，这里的可寻址是指`它的值可以通过这个地址来更新`。
+// reflect.Value 类型某些是可寻址的，某些是不可寻址的。
+x := 2                    // 值    类型   可寻址？
+a := reflect.ValueOf(2)   // 2     int   no
+b := reflect.ValueOf(x)   // 2     int   no
+c := reflect.ValueOf(&x)  // &x    *int  no
+d := c.Elem()             // 2     int   yes(x)
+// a 是不可寻址的原因是，它包含的仅仅是整数 2 的一个副本。 b c 也是
+// 通过 reflect.ValueOf(x) 返回的 reflect.Value 都是不可寻址的
+// 但 d 是通过对 c 中的指针解引用得来的，所以它是可寻址的。(Elem 函数返回指针指向的变量，但是是以 reflect.Value 返回)
+// 可以通过调用 reflect.ValueOf(&x).Elem() 来获得任意变量 x 可寻址的 Value 值。
+// 返回的是指针的解引用的 Value 都是可寻址的，比如 reflect.ValueOf(e).Index(i) /* 其中 e 是一个 slice*/
+x := 2
+d := reflect.ValueOf(&x).Elem()   // d 代表变量 x
+px := d.Addr().Interface().(*int) // px := &x, 前提是指导 d 是 int
+*px = 3                           // x = 3
+fmt.Println(x)                    // 3
+d.Set(reflect.ValueOf(4))         // 可直接调用 Set, (不可寻址的变量使用 Set 也会崩溃)
+d.Set(reflect.ValueOf(int64(4)))  // 崩溃, 必须注意原来的类型
+fmt.Println(x)                    // 4
+// 另外，利用反射可以读取到未导出结构字段的值，常规方法是不可以的，但不能用反射更新这些值。
+// Value.CanAddr() 可以返回是否可寻址, Value.CanSet() 返回是否可修改。
+
+// (4) 注意事项：谨慎使用
+// a. 基于反射的代码是很脆弱的，稍有不慎很容易导致崩溃。
+// b. 反射的相关操作无法做静态类型检查，大量使用反射难以理解。
+// c. 基于反射的函数会比为特定类型优化的函数慢一两个数量级。
+```
+## 第 13 章--低级编程 容易混淆的知识点
+unsafe 包广泛使用在和操作系统交互的低级包(比如 runtime, os, syscall 和 net) 中。
+```
+// (1) unsafe.Sizeof 返回指定参数在内存中占用的字节长度。
+// 在 32位系统上，1 字 == 4 字节；在 64位操作系统上，1 字 == 8 字节
+// 结构体也会存在内存对齐问题。
+/*   --------- 类型的字节长度 ----------------    */
+bool                             1 字节
+intN, uintN, floatN, complexN    N/8 个字节
+int, uint, uintptr               1 字
+*T                               1 字
+string                           2 字(数组指针, 数组长度)
+[]T                              3 字(数组指针, 长度, 容量)
+map                              1 字
+func                             1 字
+chan                             1 字
+interface                        2 字(动态类型, 动态值)
+
+// (2) unsafe.Alignof 报告参数类型所要求的对齐方式
+// (3) unsafe.Offsetof 报告成员 f 相对于结构体 x 起始地址偏移值，如果有内存空位，也计算在内。
+
+// (4) unsafe.Pointer 相当于 cpp 的 void* 可以对人以指针类型转化，但转换类型可能会变化。
+
+// (5) Go 也可以调用 C/C++ 代码(用 cgo) (不常用的功能)
+import "C" // 虽然没有包的名字为 C
+```
 
 
 
