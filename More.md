@@ -832,6 +832,34 @@ fmt.Println(t)          // "int"
 var w io.Writer = os.Stdout
 fmt.Println(reflect.TypeOf(w)) // "*os.File"
 // reflect.Type 满足 Stringer
+
+// (2) reflect.Value ： 可以包含任意类型的值。
+// reflect,ValueOf 函数可以接受任何的 interface{} 参数，并将接口的动态值以 reflect.Value 的形式返回。
+// 与 reflect.TypeOf 类似，但 reflect.ValueOf 返回的是具体值，不过 reflect.Value 也可以包含一个接口值。
+v := reflect.ValueOf(3) // 一个 reflect.Value
+fmt.Println(v) // "3"
+fmt.Println("%v\n", v) // "3"
+fmt.Println(v.String()) // 注意: "<int Value>" // 存储 int 类型的 Value 类型
+// reflect.Value 也满足 fmt.Stringer.
+// 调用 Value 的 Type 方法会把它的类型以 reflect.Type 返回.
+t := v.Type() // 一个 reflect.Type
+fmt.Println(t.String()) // "int"
+// reflect.ValueOf 的逆操作是 reflect.Value.Interface 方法, 它返回一个 interface{} 接口值, 与 reflect.Value 包含同一个具体值。
+v := reflect.ValueOf(3) // 一个 reflect.Value
+x := v.Interface() // 一个 interface{}
+i := x.(int)       // 一个 int
+fmt.Println("%d\n", i) // "3"
+// Value 和 interface{} 的区别:
+//  a. 空接口隐藏了值的布局信息、内置操作和相关方法, 只提供了一些公共的方法
+//  b. Value 有很多方法可以用来分析所包含的值，而不用知道它的类型。
+// Value 的 Kind 方法 可以区分不同的类型
+v.Kind() // 有以下类型
+reflect.Int reflect.Int8 ... reflect.Int64
+reflect.Uint reflect.Uint8 ... reflect.Uint64 reflect.Uintptr
+reflect.Bool
+reflect.String
+reflect.chan reflect.Func reflect.Ptr reflect.Slice reflect.Map
+// 省略了浮点数和复数类型没写出来。
 ```
 
 
