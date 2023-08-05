@@ -774,6 +774,27 @@ go list github.com/go-sql-driver/mysql
 // go list gopl.io/ch3/... 枚举子树中所有的包
 // go list ...xml... 枚举一个具体的主题
 ```
+## 第 11 章--测试 容易混淆的知识点
+* go test 测试工具
+```
+// (1) *_test.go 文件不是 go build 编译的目标, 是 go test 编译的目标。
+// 在 *_test.go 文件中，三种函数需要特殊对待:
+//  a. 功能测试函数：以 Test 前缀命名的函数，用来检测一些程序逻辑的正确性，go test 运行测试函数，并且报告结果是 PASS 还是 FAIL.
+//  b. 基准测试函数：以 Benchmark 前缀命名的函数，用来测试某些操作的性能，go test 汇报操作的平均执行时间。
+//  c. 示例函数：以 Example 前缀命名的函数，用来提供机器检查过的文档。
+// (2) go test 工具扫描 *_test.go 文件 来寻找特殊函数，生成一个临时的 main 包来调用他们，然后编译和运行，并汇报结果，最后清空临时文件。
+```
+* 功能测试函数
+```
+// (1) 每一个测试文件必须导入 testing 包。这些函数的函数签名如下：
+func Test'Name'(t *testint.T) { // 'Name' 是自己定义的名字，不用引号
+  // ...
+}
+func TestSin(t *testint.T) {/*...*/}
+func TestLog(t *testint.T) {/*...*/}
+// (2) -v 参数可以输出每个测试用例的名称和运行时间。-run="grep"的参数是一个正则表达式，可以只运行与正则表达式匹配的函数。
+```
+
 
 
 
