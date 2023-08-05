@@ -793,7 +793,37 @@ func Test'Name'(t *testint.T) { // 'Name' 是自己定义的名字，不用引�
 func TestSin(t *testint.T) {/*...*/}
 func TestLog(t *testint.T) {/*...*/}
 // (2) -v 参数可以输出每个测试用例的名称和运行时间。-run="grep"的参数是一个正则表达式，可以只运行与正则表达式匹配的函数。
+// (3) 测试失败调用 t.Errorf 不会导致程序宕机，要是程序失败时结束，可以用t.Fatal。
+
+// (4) 白盒测试: 测试者可以访问包的内部函数和数据结构，并且可以做一些常规用户无法做到的观察和改动。
+// (5) 黑盒测试: 测试者对包的了解仅通过公开的 API 和文档，对包的内部逻辑时不透明的。
+// (6) 外部测试：当需要循环引用测试时，定义一个同根目录下的外部测试包。
 ```
+* 基准测试函数
+相比 功能测试函数，增加了 b.N 用来指定检测操作的次数。
+```
+// (1) 每一个测试文件必须导入 testing 包。这些函数的函数签名如下：
+func Benchmark'Name'(t *testint.B) { // 'Name' 是自己定义的名字，不用引号
+  // ...
+}
+func BenchmarkSin(b *testint.B) {/*...*/}
+// (2) 使用性能剖析
+go test -cpuprofile=cpu.log
+go test -blockprofile=block.log
+go test -memprofile=mem.log
+// (3) 使用 go tool pprof 来分析性能剖析结果。
+go tool pprof -text -nodecount=10 ./http.test cpu.log 
+```
+* 实例函数
+Example 函数既没有参数也没有结果，主要有三个目的：  
+  a. 作为文档：以举例子的形式；
+  b. 通过 go test 运行。
+  c. 提供手动实验代码，(用处不大)。
+## 第 12 章--反射 容易混淆的知识点
+Go 语言提供了一种机制，在编译时不知道类型的情况下，可更新变量、在运行时查看值、调用方法以及直接对他们的布局进行操作，这种机制称为`反射`。
+
+
+
 
 
 
