@@ -820,7 +820,19 @@ Example 函数既没有参数也没有结果，主要有三个目的：
   b. 通过 go test 运行。
   c. 提供手动实验代码，(用处不大)。
 ## 第 12 章--反射 容易混淆的知识点
-Go 语言提供了一种机制，在编译时不知道类型的情况下，可更新变量、在运行时查看值、调用方法以及直接对他们的布局进行操作，这种机制称为`反射`。
+Go 语言提供了一种机制，在编译时不知道类型的情况下，可更新变量、在运行时查看值、调用方法以及直接对他们的布局进行操作，这种机制称为`反射`。  
+反射功能由 reflect 包提供，定义了两个重要的类型： Type 和 Value.
+```
+// (1) reflect.Type : Type 表示 Go 语言的一个类型，它是一个有很多方法的接口，这些方法可以用来识别类型以及透视类型的组成部分。
+// reflect.Type 接口只有一个实现，即类型描述符，接口值中的动态类型也是类型描述符。
+// reflect.TypeOf 函数接受任何的 interface{} 参数，并且返回一个 reflect.Type--存储接口的动态类型。
+t := reflect.TypeOf(3) // 一个 reflect.Type
+fmt.Println(t.String()) // "int"
+fmt.Println(t)          // "int"
+var w io.Writer = os.Stdout
+fmt.Println(reflect.TypeOf(w)) // "*os.File"
+// reflect.Type 满足 Stringer
+```
 
 
 
