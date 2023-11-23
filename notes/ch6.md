@@ -51,6 +51,6 @@ fmt.Println(distanceFromP(q)) // "5"
 distance = Point.Distance // 方法表达式, 类似 cpp bind() 函数绑定成员函数
 fmt.Println(distance(p, q)) // 相当于调用 p.Distance(p), 第一个参数指定调用对象
 ```
-* 封装
-(1) Go 封装的级别是package, 而不是结构体，同一个 package 内, 结构体的成员都是可见的
+* 封装  
+(1) Go 封装的级别是package, 而不是结构体，同一个 package 内, 结构体的成员都是可见的  
 (2) 结构体的成员首字母小写，则在另一个 package 不可见。
