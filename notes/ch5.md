@@ -1,5 +1,5 @@
 ## 第 5 章--函数 容易混淆知识点
-```
+```Go
 // (1) 函数参数没有默认参数的概念。
 // (2) 函数返回值也可以先指定名字。(类似 matlab)
 func sub(x, y int) (z int) {
@@ -36,8 +36,8 @@ func main {
   fmt.Println(f()) // "9"
   fmt.Println(f()) // "16"
 }
-----------------------------------------
-捕获迭代变量的坑
+// ----------------------------------------
+// 捕获迭代变量的坑
 var rmdirs []func()
 for _, d := range tempDirs() {
   dir := d  // 创建一个副本
@@ -73,8 +73,8 @@ fmt.Println(sum(1, 2, 3, 4)) // "10"
 values := []int{1, 2, 3, 4}
 sum(values...)
 // (9) 延迟函数 defer
-  a. 就是在一个普通的函数或方法调用，在调用之前加上关键字 defer。 : 实际的调用推迟到包含 defer 语句的函数结束后才执行
-  b. 可以有多个 defer ，执行时以调用 defer 语句顺序的倒序执行。
+  // a. 就是在一个普通的函数或方法调用，在调用之前加上关键字 defer。 : 实际的调用推迟到包含 defer 语句的函数结束后才执行
+  // b. 可以有多个 defer ，执行时以调用 defer 语句顺序的倒序执行。
 var mu sync.Mutex
 var m = make(map[string]int)
 func lookup (key string) int {
@@ -83,8 +83,8 @@ func lookup (key string) int {
   return m[key]
 }
 // (10) 宕机与恢复
-panic() 和 assert() 类似，但 panic() 可以接受非 bool 的参数
-recover 函数： 只能在defer 函数里执行。终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
+// panic() 和 assert() 类似，但 panic() 可以接受非 bool 的参数
+// recover 函数： 只能在defer 函数里执行。终止当前的宕机状态并且返回宕机的值，函数不会从之前宕机的状态继续运行，而是正常返回。
 func soleTitle(element int) (title string, err error) {
   type bailout struct{}
   defer func() {

@@ -1,6 +1,6 @@
 ## 第 9 章--使用共享变量实现并发 容易混淆的知识点
 * 锁
-```
+```Go
 // (1) 类型 sync.Mutex
 // 成员函数 Lock() 上锁, Unlock() 解锁.
 // 通常使用 defer 搭配 Unlock() 使用.
@@ -12,7 +12,7 @@
 * 内存宽松模型 (同 cpp)
 * sync.Once (同 cpp 的 call_once() 函数 和 once_flag 变量)
 sync.Once 包含一个 bool 变量 和 一个互斥量, 有唯一 Do() 方法
-```
+```Go
 var loadIconsOnce sync.Once
 var icons map[string]image.Image
 func loadIcons() {/*...*/} // 初始化 icons 函数
@@ -23,7 +23,7 @@ func Icon(name string) image.Image {
 }
 ```
 * goroutine 和 线程
-```
+```Go
 // (1) 每个 os 线程有一个固定的大小的栈内存。一个 goroutine 在生命周期开始时只有一个很小的栈，典型情况为 2KB。
 // goroutine 的栈不是固定大小的，它可以按需增大和缩小，大小限制可以达到 1GB。
 

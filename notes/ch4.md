@@ -1,6 +1,6 @@
 ## 第 4 章--复合数据类型 容易混淆知识点
 * 数组：(使用较少)
-```
+```Go
 // (1) 不同长度的数组是不同的类型。
 // (2) 可以在初始化列表中使用下标的方式给指定下标的位置赋值
 symbol := [...]int{99: -1} // symbol 的长度是 100, 第100位是 -1
@@ -16,7 +16,7 @@ func zero(ptr *[32]byte) {
 }
 ```
 * slice：(使用较多)
-```
+```Go
 // (1) slice 有三个属性: 指针, 长度, 容量。指针指向底层数组的第一个可以从slice中访问的元素, 这个元素不一定是数组的第一个元素。
 // (2) 一个底层数组可以对应多个 slice, 被不同的 slice 引用。
 // (3) 当一个 slice 引用一个底层数组的子数组时, 引用不可以超过数组的边界, 但引用可以扩展 slice。
@@ -39,7 +39,7 @@ s = append(s, str, str, str) // 这里的参数可以变化
 // (10) slice 可以使用 reverse, rotate 等函数实现就地修改 slice 元素。
 ```
 * map: 类型是 map[k]v， 也是引用类型
-```
+```Go
 // (1) 键的类型必须可 == 比较。
 ages := map[string]int {
   "alice": 31,
@@ -61,7 +61,7 @@ ages["bob"] = 20 // 错误, 为 nil 值 map 赋值
 // (6) 当 key 不可比较时，可以自定义一个函数, 先把不可比较的 key 映射到唯一的可比较类型集合
 ```
 * 结构体：
-```
+```Go
 // (1) 结构体变量用 '.' 来访问属性，结构体指针也是用 '.' 来访问属性。
 // (2) 成员变量的顺序影响结构体的同一性，顺序不一样结构体类型也不同。首字母大写的成员变量可导出(其他包可见)，首字母小写的不可导出。
 // (3) 结构体初始化：1) 通过结构体字面量按顺序初始化；2) 通过变量名称和值来初始化。
@@ -86,7 +86,7 @@ type Wheel struct {
 
 var w Wheel
 w.Circle.Center.X  = 8 // 访问太长了
----------------- 匿名成员 --------------------------
+// ---------------- 匿名成员 --------------------------
 type Circle struct {
   Point
   Radius int
@@ -111,14 +111,14 @@ w = wheel{
 } // 正确
 ```
 * JSON (JavaScript对象表示法)
-```
-boolean     true
-number      -273.15
-string      "She said \"hello, 世界\""
-array       ["gold", "silver", "bronze"]
-object      {"year": 1990,
-             "event": "archery",
-             "medals": [["gold", "silver", "bronze"]]}
+```Go
+// boolean     true
+// number      -273.15
+// string      "She said \"hello, 世界\""
+// array       ["gold", "silver", "bronze"]
+// object      {"year": 1990,
+//              "event": "archery",
+//              "medals": [["gold", "silver", "bronze"]]}
 // (1) 把 Go 的数据结构转换为 JSON 称为 marshal, 通过 json.Marshal 实现。
 type Movie struct {
   Title string
@@ -142,8 +142,8 @@ fmt.Printf("%s\n", data)
 [{"Title":"Casablanca","released":1942,"Actors":["Humphrey Bogart",
 "Ingrid Bergman"]},{"Title":"Cook Hand Luke","released":1967,"colo
 r":true,"Actors":["Paul Newman"]}]
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 data, err := json.MarshalIndent(movies, "", "    ") // 每行输出的前缀, 缩进的字符串
 if err != nil {
   Log.Fatalf("JSON marshaling failed: %s", err)

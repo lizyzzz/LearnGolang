@@ -3,7 +3,7 @@ Golang学习笔记
 ## 1. 语法基础
 ### 基础组成部分：  
 （1）包声明；（2）引入包；（3）函数；（4）变量；（5）语句 & 表达式；（6）注释  
-```
+```Go
 package main
 /* 定义了包名。必须在源文件中非注释的第一行指明这个文件属于哪个包，
 如：package main。package main表示一个可独立执行的程序，每个 Go 应用程序都包含一个名为 main 的包。*/
@@ -21,7 +21,7 @@ func main() { // 需要注意的是 { 不能单独放在一行
 Go 语言中使用 fmt.Sprintf 或 fmt.Printf 格式化字符串并赋值给新串：  
 * Sprintf 根据格式化参数生成格式化的字符串并返回该字符串。
 * Printf 根据格式化参数生成格式化的字符串并写入标准输出。
-```
+```Go
 package main
 
 import (
@@ -41,7 +41,7 @@ func main() {
 Code=123&endDate=2020-12-31
 ```
 ### 编译与执行：  
-```
+```Shell
 $ go run hello.go
 Hello, World!
 或
@@ -95,7 +95,7 @@ func Sub(x,y int) int {
 (4) 派生类型：(a) 指针 (b) 数组 (c) 结构化类型 (d) Channel类型 (e) 函数类型 (f) 切片类型 (g) 接口类型 (h) Map类型。
 ### 变量
 声明变量用 var 关键字  
-```
+```Go
 var identifier type
 var identifier1, identifier2 type  // 声明多个变量
 package main
@@ -117,7 +117,7 @@ func main() {
 }
 ```
 ### 常量
-```
+```Go
 // 定义格式： const identifier [type] = value // [type] 可以省略
 const LENGTH int = 10
 const WIDTH int = 5  
@@ -163,10 +163,10 @@ const (
 * 赋值运算符  
   = += -= \*= /= %= <<= >>= &= ^= |=（同cpp）
 * 运算符优先级
-![image-1](https://github.com/lizyzzz/LearnGolang/blob/main/images/1.png)
+![image-1](./images/1.png)
 ### 条件语句
 （1）if 语句
-```
+```GO
 package main
 import "fmt"
 
@@ -196,7 +196,7 @@ func main() {
 }
 ```
 （2）switch 语句
-```
+```Go
 /*
 switch 语句执行的过程从上至下，直到找到匹配项，匹配项后面也不需要再加 break。
 switch 默认情况下 case 最后自带 break 语句，匹配成功后就不会执行其他 case，如果我们需要执行后面的 case，可以使用 fallthrough 。
@@ -253,7 +253,7 @@ func main() {
 }
 ```
 （3）select 语句
-```
+```Go
 package main
 
 import "fmt"
@@ -291,7 +291,7 @@ func main() {
 ```
 ### 循环语句
 （1）for 循环（Go 没有 while 循环）
-```
+```Go
 // 第一种：和 cpp 的 for 一样
 for init; condition; post { }
 // 第二种：和 cpp 的 while 一样
@@ -355,7 +355,7 @@ continue
 goto(与 cpp 一样少用)
 ```
 ### 函数
-```
+```Go
 // 函数形式
 // [] 中的内容可以省略, 而且 return_types 可以有多个值
 // 默认是 值传递, 也有引用传递, 引用传递就是指针类型
@@ -423,7 +423,7 @@ func callBack(x int) int {
 ```
 ### 函数闭包
 Go 语言支持匿名函数，可作为闭包。匿名函数是一个"内联"语句或表达式。匿名函数的优越性在于可以直接使用函数内的变量，不必申明。
-```
+```Go
 package main
 
 import "fmt"
@@ -455,7 +455,7 @@ func main(){
 ```
 ### 函数方法
 Go 语言中同时有函数和方法。一个方法就是一个包含了接受者的函数，接受者可以是命名类型或者结构体类型的一个值或者是一个指针。所有给定类型的方法属于该类型的方法集。
-```
+```Go
 // 语法格式:
 func (variable_name variable_data_type) function_name() [return_type]{
    /* 函数体*/
@@ -485,7 +485,7 @@ func (c Circle) getArea() float64 {
 }
 ```
 ### 数组
-```
+```Go
 // 声明数组
 // var arrayName [size]dataType
 var balance [10]float32 // 会默认初始化为 0.0
@@ -572,7 +572,7 @@ func getAverage(arr []int, size int) float32 {
 }
 ```
 ### 指针
-```
+```Go
 // 语法形式
 // var var_name *var-type
 // 空指针为 nil
@@ -583,7 +583,7 @@ func getAverage(arr []int, size int) float32 {
 */
 ```
 ### 结构体
-```
+```Go
 // 语法形式
 type struct_variable_type struct {
    member definition
@@ -629,7 +629,7 @@ var struct_pointer *struct_variable_type
 ```
 ### 切片
 类似 cpp 中的 vector 数组
-```
+```Go
 // 语法形式
 // var identifier []type // 不用说明长度
 /*
@@ -664,7 +664,7 @@ copy(numbers1, numbers[1:])  // 把 number 的[1,end]拷贝给 numbers1
 ```
 ### 范围 range
 range 关键字用于 for 循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素。在数组和切片中它返回元素的索引和索引对应的值，在集合中返回 key-value 对
-```
+```Go
 // 语法格式
 for key, value := range oldMap {
     newMap[key] = value
@@ -686,7 +686,7 @@ for k, v := range kvs {
 ```
 ### map 类型
 map 是一种无序的键值对的集合。与 cpp 的 map 或 unordered_map 相似
-```
+```Go
 // 创建语法
 map_variable := make(map[KeyType]ValueType, initialCapacity)
 // 容量会动态扩展
@@ -706,7 +706,7 @@ len := len(m)        // 获取 Map 的长度
 * Go 语言提供了另外一种数据类型即接口，它把所有的具有共性的方法定义在一起，任何其他类型只要实现了这些方法就是实现了这个接口。  
 * 接口可以让我们将不同的类型绑定到一组公共的方法上，从而实现多态和灵活的设计。  
 * Go 语言中的接口是隐式实现的，也就是说，如果一个类型实现了一个接口定义的所有方法，那么它就自动地实现了该接口。因此，我们可以通过将接口作为参数来实现对不同类型的调用，从而实现多态。
-```
+```Go
 /* 定义接口 */
 type interface_name interface {
    method_name1 [return_type]
@@ -765,7 +765,7 @@ func main() {
 }
 ```
 ### 类型转换
-```
+```Go
 // 基本格式
 type_name(expression)
 var a int = 10
@@ -840,7 +840,7 @@ func main() {
 ```
 ### 错误处理
 Go 语言通过内置的错误接口提供了非常简单的错误处理机制。
-```
+```Go
 // 定义 error 接口类型
 type error interface {
     Error() string
@@ -863,7 +863,7 @@ if err != nil {
 ### 并发
 Go 语言支持并发，我们只需要通过 go 关键字来开启 goroutine 即可。
 goroutine 是轻量级线程（协程），goroutine 的调度是由 Golang 运行时进行管理的。
-```
+```Go
 // 语法形式
 go 函数名( 参数列表 )
 go f(x, y, z) // 开启一个线程
@@ -901,7 +901,7 @@ hello
 ### 通道
 通道（channel）是用来传递数据的一个数据结构。  
 通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。 操作符 <- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。
-```
+```Go
 ch <- v    // 把 v 发送到通道 ch
 v := <-ch  // 从 ch 接收数据
            // 并把值赋给 v
