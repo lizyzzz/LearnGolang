@@ -126,6 +126,8 @@ type Movie struct {
   Color bool  `json:"color,omitempty"`  // omitempty 表示是零值或空值可以不解析
   Actors []string
 }
+// `json:"-"` 表示该字段不用于编码
+
 var movies = []Movies {
   {Title: "Casablanca", Year: 1942, Color: false,
     Actors: []string{"Humphrey Bogart", "Ingrid Bergman"}},

@@ -25,6 +25,7 @@ s[0] = 'L' // 编译错误
 0~127： 0xxxxxxx 表示，首位是 0
 128～2047：110xxxxx 10xxxxxx 表示，第一字节首位是 110，第二字节首位是 10
 2048～65535：1110xxxx 10xxxxxx 10xxxxxx 表示，第一字节首位是 1110，第二字节首位是 10，第三字节首位是 10
+2048～65535：11110xxx 10xxxxxx 10xxxxxx 10xxxxxx 表示，第一字节首位是 11110，第二字节首位是 10，第三字节首位是 10, 第四字节首位是 10
 有些不可以用键盘输入的字符，可以用转义序列表示
 \uhhhh，其中 h 是16进制数，两个字节的转义
 \xhh，表示的是一个字节转义
@@ -41,6 +42,40 @@ s := "hello"
 s[0] = 'L' // 编译错误
 b := []byte(s) // 类型转换为 []byte, 并且会复制一份副本, 填入 s 含有的字节, 并生成一个 slice 引用指向整个数组
 b[1] = 'a' // 正确
+// for range string 的用法
+str2 := "Chinese: 中国话"
+for index, r := range str2 {
+  fmt.Printf("character %c starts at byte position %d\n", r, index)
+}
+for index, r := range str2 {
+  fmt.Printf("%-2d    %d    %U    '%c'    % X \n", index, r, r, r, []byte(string(rune)))
+}
+/* 输出
+character C starts at byte position 0
+character h starts at byte position 1
+character i starts at byte position 2
+character n starts at byte position 3
+character e starts at byte position 4
+character s starts at byte position 5
+character e starts at byte position 6
+character : starts at byte position 7
+character   starts at byte position 8
+character 中 starts at byte position 9
+character 国 starts at byte position 12
+character 话 starts at byte position 15
+0     67    U+0043    'C'    43 
+1     104    U+0068    'h'    68 
+2     105    U+0069    'i'    69 
+3     110    U+006E    'n'    6E 
+4     101    U+0065    'e'    65 
+5     115    U+0073    's'    73 
+6     101    U+0065    'e'    65 
+7     58    U+003A    ':'    3A 
+8     32    U+0020    ' '    20 
+9     20013    U+4E2D    '中'    E4 B8 AD 
+12    22269    U+56FD    '国'    E5 9B BD 
+15    35805    U+8BDD    '话'    E8 AF 9D
+*/
 ```
 * bytes 包提供的 Buffer 类型可以高效处理 []byte
 * 注意无类型常量的写法。
